@@ -16,26 +16,13 @@ description: Use when starting a session, when asked to remember/correct/forget 
 - Do not use this skill to keep a step-by-step activity journal.
 
 ## Inputs
-- Instruction/context files:
-  - Global `AGENTS.md`.
-  - Project `AGENTS.md`.
-  - Project `LOCAL.md` (if present).
-  - Project `MEMORY.md`.
-  - Global `MEMORY.md`.
-- Runtime inputs:
-  - Current user instructions and conversation context.
-  - Relevant source-of-truth project artifacts (for example design notes, plans, meeting records).
-  - Explicit user directives to remember, correct, or forget entries.
+- Read required instruction/memory files and runtime inputs as defined in `references/file-context.md`.
+- Required runtime signals include current user instructions, explicit remember/correct/forget directives, and relevant source-of-truth artifacts.
 
 ## Outputs
-- Primary outputs:
-  - Updated project `MEMORY.md`.
-  - Updated global `MEMORY.md`.
-- Secondary outputs:
-  - Project-specific file updates only when project instructions explicitly require them.
-  - Memory references to source artifacts instead of mirrored copies.
-- Default non-target files:
-  - Do not edit `AGENTS.md` or `LOCAL.md` unless explicitly instructed by the user.
+- Primary outputs are updated project/global `MEMORY.md`.
+- Project-specific file edits are allowed only when explicitly required by project instructions.
+- File-level output boundaries and reference behavior are defined in `references/file-context.md`.
 
 ## Workflow
 1. Load instruction context and source artifacts.
@@ -44,8 +31,8 @@ description: Use when starting a session, when asked to remember/correct/forget 
    - Read relevant project-defined source-of-truth artifacts.
 2. Ensure memory files exist.
    - If project or global `MEMORY.md` is missing, create:
-   - `# MEMORY`
-   - `## Rules`
+     - `# MEMORY`
+     - `## Rules`
 3. Apply in-session updates.
    - Capture high-signal updates incrementally in the correct bucket/layer.
    - Apply explicit remember/correct/forget requests immediately.
@@ -114,8 +101,8 @@ description: Use when starting a session, when asked to remember/correct/forget 
 
 ## Safety and Constraints
 - Instruction precedence: apply `AGENTS.md` -> `LOCAL.md` -> `MEMORY.md`.
-- Context-loading requirement: read relevant instruction and memory files together before relying on memory state.
-- If the project defines required locations for design notes, meeting minutes, or plans, those rules override generic defaults in this skill.
+- Do not edit `AGENTS.md` or `LOCAL.md` unless explicitly instructed by the user.
+- File loading, precedence interpretation examples, and location overrides are defined in `references/file-context.md`.
 
 ## Verification
 - Verification is best effort (quality support), not a hard completion gate.
