@@ -28,6 +28,7 @@ Codex example:
 ## Context-Loading Rules
 - Read relevant instruction and memory files together before relying on stored memory state.
 - Use precedence order: `AGENTS.md` -> `LOCAL.md` -> `MEMORY.md`.
+- A project `AGENTS.md` may mirror these file definitions or provide variants. When in conflict, follow the project-specific instructions.
 - If project instructions define source-of-truth locations (for example design notes, meeting minutes, plans), follow those project rules over generic defaults in this skill.
 
 ## Output and Edit Boundaries
