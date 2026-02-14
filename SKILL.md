@@ -15,34 +15,28 @@ description: Use when starting a session, when asked to remember/correct/forget 
 - Task completion: reconcile and condense memory at task boundaries (can be inferred from workflow signals such as `git commit` unless project instructions define otherwise).
 - Do not use this skill to keep a step-by-step activity journal.
 
-## Inputs
-- Read required instruction/memory files and runtime inputs as defined in `references/file-context.md`.
-- Required runtime signals include current user instructions, explicit remember/correct/forget directives, and relevant source-of-truth artifacts.
+## Relevant Files
+- File inputs/outputs and edit boundaries are defined in `references/file-context.md`.
+- Primary maintained files are project/global `MEMORY.md`.
+- Project-specific non-memory file edits are only allowed when explicitly required by project instructions.
 
-## Outputs
-- Primary outputs are updated project/global `MEMORY.md`.
-- Project-specific file edits are allowed only when explicitly required by project instructions.
-- File-level output boundaries and reference behavior are defined in `references/file-context.md`.
+## Data Model
+- Buckets: `project`, `global`.
+- Layers: `facts`, `decisions`, `rules`, `open_questions`, `plan`.
+- Explanations and storage conventions are defined in `references/memory-operations.md` (`Data Model`).
 
 ## Workflow
-1. Load instruction context and source artifacts.
-   - Read global `AGENTS.md` and global `MEMORY.md`.
-   - Read local `AGENTS.md`, local `LOCAL.md` (if present), and local `MEMORY.md`.
-   - Read relevant project-defined source-of-truth artifacts.
+1. Load context.
+   - Read required instruction/memory files from `references/file-context.md`.
+   - Read relevant project source-of-truth artifacts for the current task.
 2. Ensure memory files exist.
-   - If project or global `MEMORY.md` is missing, create:
-     - `# MEMORY`
-     - `## Rules`
-3. Apply in-session updates.
-   - Capture high-signal updates incrementally in the correct bucket/layer.
+   - If project/global `MEMORY.md` is missing, create the minimal skeleton from `references/file-context.md` (`Missing-File Behavior`).
+3. Update during work.
+   - Apply extraction and update lifecycle rules from `references/memory-operations.md` (`Extraction Rules`, `Update Rules`).
    - Apply explicit remember/correct/forget requests immediately.
-   - If source-of-truth changes invalidate memory, update or remove affected entries in-session when practical.
-4. Reconcile and condense at task end.
-   - Reconcile both buckets, merge duplicates, resolve contradictions, remove stale content, and validate references.
-   - Task end may be inferred from workflow signals such as `git commit` unless project rules define another boundary.
-5. Run best-effort verification.
-   - Run practical checks from `Verification`.
-   - If checks are skipped, record the gap and represent unresolved uncertainty in `open_questions`.
+4. Reconcile and verify at task boundary.
+   - Apply reconcile/verification guidance from `references/memory-operations.md` (`Verification`, `Common Mistakes`).
+   - Task boundaries may be inferred from workflow signals such as `git commit` unless project rules define another boundary.
 
 ## Quick Reference
 - Trigger map:
@@ -55,49 +49,8 @@ description: Use when starting a session, when asked to remember/correct/forget 
   - If rationale is needed, store it in `decisions`.
   - If guidance is reusable across projects, consider promotion from `project` to `global`.
 
-## Data Model
-- Buckets:
-  - `project`
-  - `global`
-- Storage:
-  - Markdown sections (no rigid per-entry schema).
-  - `project` bucket in project `MEMORY.md`.
-  - `global` bucket in home `MEMORY.md`.
-  - Agent resolves home/project paths from runtime context.
-  - Codex example (non-binding): global memory may be `$CODEX_HOME/MEMORY.md` or `~/.codex/MEMORY.md`.
-- Shared layers in each bucket:
-  - `facts`: observed or verified state.
-  - `decisions`: chosen direction with rationale.
-  - `rules`: constraints and practices.
-  - `open_questions`: unresolved items.
-  - `plan`: intended next actions.
-- Entry style:
-  - Grouped notes are allowed; strict atomic-only entries are not required.
-
-## Extraction Rules
-- Capture only high-signal knowledge (facts, decisions, rules, open questions, plans).
-- Do not use memory as an activity journal.
-- `project` bucket: keep repository/workstream-specific knowledge that matters for future execution.
-- `global` bucket: keep reusable cross-project patterns, heuristics, and constraints.
-- Condense regularly to remove stale or redundant details while preserving durable signal.
-- For design notes, meeting minutes, and plans:
-  - Reference source files rather than mirroring full content.
-  - Keep references current when source documents change.
-
-## Update Rules
-- Layer lifecycle:
-  - Add layers incrementally when relevant; do not pre-populate all layers.
-- Standard sequence:
-  1. Classify into bucket (`project` or `global`) and layer (`facts`, `decisions`, `rules`, `open_questions`, `plan`).
-  2. Check for existing overlapping meaning.
-  3. Merge or replace instead of appending duplicates.
-  4. For conflicts, keep only current best-known active state in `facts`; keep directional rationale in `decisions`.
-  5. If uncertain and not verifiable in-session, write to `open_questions`.
-  6. Wording policy for `rules`: hard constraints use `always`/`do not`; soft guidance uses `should`/`avoid`.
-  7. Validate references and remove stale links.
-- Scope transitions:
-  - Promote `project` to `global` only when guidance is reusable across projects.
-  - Rewrite promoted guidance to be context-agnostic and remove project-local specifics.
+## Maintenance Rules
+- Extraction and update lifecycle details are defined in `references/memory-operations.md` (`Extraction Rules`, `Update Rules`).
 
 ## Safety and Constraints
 - Instruction precedence: apply `AGENTS.md` -> `LOCAL.md` -> `MEMORY.md`.
@@ -105,31 +58,7 @@ description: Use when starting a session, when asked to remember/correct/forget 
 - File loading, precedence interpretation examples, and location overrides are defined in `references/file-context.md`.
 
 ## Verification
-- Verification is best effort (quality support), not a hard completion gate.
-- Core checks when practical:
-  - Correct bucket/layer placement.
-  - No duplicate or contradictory active entries after reconcile.
-  - Reference integrity (source still exists and supports stored summary).
-  - Concise, high-signal entries (journal-style logs removed).
-- If checks are skipped:
-  - Record which checks were skipped and why.
-  - Represent uncertainty as follow-up `open_questions`.
-  - Prefer partial verified updates over unreviewed bulk additions.
+- Verification checks and fallback behavior are defined in `references/memory-operations.md` (`Verification`).
 
 ## Common Mistakes
-- Mistake: Logging activity steps.
-  - Correction: Keep only durable high-signal knowledge.
-- Mistake: Skipping end-of-task reconcile/condense.
-  - Correction: Always reconcile at task boundary (including inferred boundaries such as `git commit`).
-- Mistake: Appending duplicates.
-  - Correction: Merge or replace overlapping entries.
-- Mistake: Putting uncertainty in `facts`.
-  - Correction: Use `open_questions` until verified.
-- Mistake: Promoting project-local details to global memory.
-  - Correction: Promote only reusable, context-agnostic guidance.
-- Mistake: Leaving stale references.
-  - Correction: Revalidate references during reconcile and remove invalid links.
-- Mistake: Spreading rationale across layers.
-  - Correction: Keep rationale in `decisions`.
-- Mistake: Editing instruction files during memory updates.
-  - Correction: Do not edit `AGENTS.md` or `LOCAL.md` unless explicitly instructed.
+- Common mistakes and corrective actions are defined in `references/memory-operations.md` (`Common Mistakes`).
