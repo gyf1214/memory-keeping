@@ -7,6 +7,7 @@ This project builds an agent skill that can memorize information across sessions
 - Define the skill workflow and supporting artifacts in this repository.
 - Keep implementation process-oriented and iterative.
 - Avoid premature decisions; refine behavior in later steps with the user.
+- Self-improvement-loop mechanics and implicit skill telemetry are out of scope for the current version.
 
 ## Repository Layout (Current)
 - `SKILL.md`: Primary skill definition (currently backbone outline).

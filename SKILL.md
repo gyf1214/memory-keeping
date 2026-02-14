@@ -11,7 +11,15 @@ description: Use when working on a process for memorizing and reusing project an
 
 ## When to Use
 - This section describes concrete triggers and boundaries for when this skill should and should not be used.
-- [Outline placeholder]
+- Use this skill at the beginning of a session.
+  - Initialize context by loading instruction and memory sources before substantive task work.
+- Use this skill when memory-relevant information appears during a session.
+  - Trigger when the user asks to remember, correct, or forget information.
+  - Trigger when the agent identifies high-signal information worth remembering.
+- Use this skill when a task is completed.
+  - Reconcile and condense memory at end-of-task boundaries.
+  - End-of-task may be inferred from workflow signals such as `git commit` unless project instructions define a different boundary.
+- Do not use this skill to maintain a step-by-step activity journal.
 
 ## Inputs
 - Required instruction/context files:
@@ -27,17 +35,60 @@ description: Use when working on a process for memorizing and reusing project an
 
 ## Outputs
 - This section defines what memory updates, references, and persisted artifacts this skill produces.
-- [Outline placeholder]
+- Primary outputs:
+  - Updated project memory file: project `MEMORY.md`.
+  - Updated global memory file: global `MEMORY.md`.
+- Secondary outputs (project-dependent):
+  - Updates to project-specific files only when project instructions explicitly require them.
+  - Memory references to project source artifacts (for example design notes, plans, and meeting records) instead of mirrored copies.
+- Non-target files by default:
+  - Do not edit `AGENTS.md` or `LOCAL.md` unless explicitly instructed by the user.
+  - If project-specific files must be edited, follow the project's file-location and editing rules.
 
 ## Workflow
 - This section defines the ordered end-to-end process for reading context, extracting knowledge, writing memory, and condensing.
-1. [Outline placeholder]
-2. [Outline placeholder]
-3. [Outline placeholder]
+1. Load instruction context and source artifacts.
+   - Read `AGENTS.md`, `LOCAL.md` (when present), project `MEMORY.md`, and global `MEMORY.md`.
+   - Read any project-defined source-of-truth artifacts relevant to the current task (for example design notes, plans, and meeting records).
+2. Ensure memory files exist.
+   - If project or global `MEMORY.md` is missing, create it with the minimal skeleton:
+   - `# MEMORY`
+   - `## Rules`
+3. Capture high-signal updates during work.
+   - As new high-signal information becomes clear, apply incremental updates to the appropriate bucket/layer.
+   - Avoid batching large unsorted updates.
+4. Apply immediate-trigger updates.
+   - If the user explicitly asks to remember, correct, or forget something, update memory immediately.
+   - If source-of-truth documents change and invalidate memory entries, update or remove those entries in the same session when practical.
+5. Reconcile and condense at end-of-task.
+   - Reconcile both memory buckets against current state, merge duplicates, resolve contradictions, and remove stale content.
+   - Validate references to project artifacts and remove or correct stale links.
+   - End-of-task may be inferred from workflow signals such as `git commit` unless project instructions define a different boundary.
+6. Run best-effort verification.
+   - Run practical quality checks from `Verification`.
+   - If checks are skipped, record the gap and represent unresolved uncertainty via `open_questions`.
 
 ## Quick Reference
 - This section provides a compact operator-facing checklist for common memory actions.
-- [Outline placeholder]
+- Trigger checklist:
+  - Session start:
+    - Load `AGENTS.md`, `LOCAL.md` (if present), project `MEMORY.md`, and global `MEMORY.md`.
+    - Ensure project/global memory files exist; create minimal skeleton if missing.
+  - During task:
+    - Capture only high-signal items.
+    - Apply immediate updates when user says remember/update/forget.
+    - Update memory when source-of-truth changes invalidate stored entries.
+  - Task end:
+    - Reconcile both buckets, merge duplicates, resolve contradictions.
+    - Condense entries and remove stale content/references.
+    - Run best-effort verification and note skipped checks.
+- If X, do Y:
+  - If information is uncertain, write it to `open_questions` (not `facts`).
+  - If entry meanings overlap, merge or replace instead of appending.
+  - If a rule is hard, use `always`/`do not`; if soft, use `should`/`avoid`.
+  - If rationale is needed, place it in `decisions`.
+  - If guidance is reusable across projects, consider promotion from `project` to `global`.
+  - If workflow signal indicates completion (for example `git commit`), run end-of-task reconcile.
 
 ## Data Model
 - Top-level buckets:
@@ -83,27 +134,30 @@ description: Use when working on a process for memorizing and reusing project an
   - Keep memory consistent with source documents; remove or update stale memory entries immediately when source documents change.
 
 ## Update Rules
-- This section defines when and how memory files are created, modified, condensed, and corrected over time.
-- File creation behavior:
-  - If project `MEMORY.md` is missing, create it automatically.
-  - If global `MEMORY.md` is missing, create it automatically.
-  - When creating a new memory file, initialize a minimal skeleton.
-- Minimal skeleton content:
-  - `# MEMORY`
-  - `## Rules`
-  - The same minimal skeleton applies to both project and global memory files.
+- This section defines how to modify memory entries when an update is performed in workflow steps 3-5.
 - Layer lifecycle behavior:
   - Do not pre-populate all layers at creation time because some layers may not apply.
   - Add layer sections incrementally only when they become relevant.
-- Content maintenance behavior:
-  - Keep rationale text in `decisions` entries only; keep other layers concise.
-  - Hard constraints use explicit language such as `always` and `do not`.
-  - Soft guidance uses explicit language such as `should` and `avoid`.
-  - [Outline placeholder]
-
-## Self-Improvement Loop
-- This section defines how the skill improves itself from usage outcomes without drifting from core constraints.
-- [Outline placeholder]
+- Standard update sequence:
+  1. Classify the information into bucket (`project` or `global`) and layer (`facts`, `decisions`, `rules`, `open_questions`, `plan`).
+  2. Check for an existing entry with overlapping meaning.
+  3. Merge or replace instead of appending duplicates.
+  4. If replaced, preserve durable rationale in `decisions` when relevant.
+  5. Re-check wording strictness (`always`/`do not` for hard constraints; `should`/`avoid` for soft guidance).
+  6. Validate references and remove stale links.
+- Scope transition rules:
+  - Promote from `project` to `global` only when guidance is reusable across projects.
+  - When promoting, rewrite wording to be context-agnostic and remove project-local details.
+  - Keep project-local examples in project memory only unless they are required as minimal evidence.
+- Uncertainty handling:
+  - If an item is uncertain and cannot be verified in-session, store it as an `open_questions` entry instead of a `facts` entry.
+- Removal and supersession rules:
+  - Remove entries that are stale, duplicated, contradicted, or no longer decision-relevant.
+  - Do not preserve superseded entries as active memory; only preserve what remains operationally true.
+  - If historical context matters, keep a concise rationale in `decisions` rather than parallel contradictory records.
+- Conflict handling:
+  - When new information conflicts with prior memory, preserve only the current best-known state in `facts` and move rationale for directional changes to `decisions`.
+  - Do not keep contradictory active entries; resolve the conflict during reconcile.
 
 ## Safety and Constraints
 - Instruction hierarchy and precedence:
@@ -119,8 +173,41 @@ description: Use when working on a process for memorizing and reusing project an
 
 ## Verification
 - This section defines checks to confirm memory quality, consistency, and instruction compliance after updates.
-- [Outline placeholder]
+- Verification mode:
+  - Verification is best effort and supports self-improvement quality; it is not a hard completion gate.
+- Core checks (run whenever practical):
+  - Bucket/layer fit:
+    - Each new or edited item is in the correct bucket (`project` or `global`) and layer (`facts`, `decisions`, `rules`, `open_questions`, `plan`).
+  - Duplication and contradiction:
+    - No duplicate entries with the same meaning remain after reconcile.
+    - No active contradictions remain in the same bucket/layer.
+  - Wording and rationale placement:
+    - Hard constraints use `always`/`do not`; soft guidance uses `should`/`avoid`.
+    - Rationale is kept in `decisions` rather than spread across other layers.
+  - Reference integrity:
+    - Referenced source files still exist and still support the stored summary.
+  - Brevity and signal:
+    - Entries remain concise and high-signal; journal-style logs are removed.
+- Best-effort fallback when checks cannot all run:
+  - Record which checks were skipped and why.
+  - Mark uncertain outcomes as follow-up `open_questions` items.
+  - Prefer partial verified updates over unreviewed bulk additions.
 
 ## Common Mistakes
 - This section lists frequent failure modes and the corrective action for each.
-- [Outline placeholder]
+- Mistake: Treating memory as an activity journal (logging every step).
+  - Correction: Keep only high-signal facts, decisions, rules, open questions, and plans.
+- Mistake: Forgetting to reconcile and condense at end-of-task.
+  - Correction: Always run reconcile/condense at task boundary (including inferred boundaries such as `git commit`).
+- Mistake: Appending duplicate entries instead of merging.
+  - Correction: Check for overlapping meaning first, then merge or replace existing entries.
+- Mistake: Putting uncertain claims into `facts`.
+  - Correction: Store uncertainty in `open_questions` until verified.
+- Mistake: Mixing project-local details into global memory.
+  - Correction: Promote to `global` only when guidance is reusable across projects; keep local specifics in project memory.
+- Mistake: Leaving stale references to source artifacts.
+  - Correction: Re-check referenced files during reconcile; update or remove invalid links immediately.
+- Mistake: Misplacing rationale across layers.
+  - Correction: Keep rationale in `decisions`; keep other layers concise and operational.
+- Mistake: Editing non-target instruction files during memory updates.
+  - Correction: Do not edit `AGENTS.md` or `LOCAL.md` unless explicitly instructed by the user.
