@@ -1,6 +1,6 @@
 ---
 name: memory-keeping
-description: Use when working on a process for memorizing and reusing project and global knowledge across sessions.
+description: Use when starting a session, when asked to remember/correct/forget information, when high-signal memory-worthy details emerge during work, or when completing a task.
 ---
 
 # Memory Keeping Skill
@@ -34,7 +34,6 @@ description: Use when working on a process for memorizing and reusing project an
   - Explicit user directives to remember, update, or remove memory entries.
 
 ## Outputs
-- This section defines what memory updates, references, and persisted artifacts this skill produces.
 - Primary outputs:
   - Updated project memory file: project `MEMORY.md`.
   - Updated global memory file: global `MEMORY.md`.
@@ -46,9 +45,9 @@ description: Use when working on a process for memorizing and reusing project an
   - If project-specific files must be edited, follow the project's file-location and editing rules.
 
 ## Workflow
-- This section defines the ordered end-to-end process for reading context, extracting knowledge, writing memory, and condensing.
 1. Load instruction context and source artifacts.
-   - Read `AGENTS.md`, `LOCAL.md` (when present), project `MEMORY.md`, and global `MEMORY.md`.
+   - Read global `AGENTS.md` and global `MEMORY.md`.
+   - Read local `AGENTS.md`, `LOCAL.md` (when present), and local `MEMORY.md`.
    - Read any project-defined source-of-truth artifacts relevant to the current task (for example design notes, plans, and meeting records).
 2. Ensure memory files exist.
    - If project or global `MEMORY.md` is missing, create it with the minimal skeleton:
@@ -134,7 +133,6 @@ description: Use when working on a process for memorizing and reusing project an
   - Keep memory consistent with source documents; remove or update stale memory entries immediately when source documents change.
 
 ## Update Rules
-- This section defines how to modify memory entries when an update is performed in workflow steps 3-5.
 - Layer lifecycle behavior:
   - Do not pre-populate all layers at creation time because some layers may not apply.
   - Add layer sections incrementally only when they become relevant.
@@ -172,7 +170,6 @@ description: Use when working on a process for memorizing and reusing project an
   - Generic storage conventions in this skill are fallback defaults only.
 
 ## Verification
-- This section defines checks to confirm memory quality, consistency, and instruction compliance after updates.
 - Verification mode:
   - Verification is best effort and supports self-improvement quality; it is not a hard completion gate.
 - Core checks (run whenever practical):

@@ -10,7 +10,7 @@ This project builds an agent skill that can memorize information across sessions
 - Self-improvement-loop mechanics and implicit skill telemetry are out of scope for the current version.
 
 ## Repository Layout (Current)
-- `SKILL.md`: Primary skill definition (currently backbone outline).
+- `SKILL.md`: Primary skill definition (current version completed for now).
 - `AGENTS.md`: Project guidance for agents working in this repository.
 - `MEMORY.md`: Working memory for progress tracking and continuity.
 
@@ -19,6 +19,7 @@ This project builds an agent skill that can memorize information across sessions
 - Track progress and useful information in `MEMORY.md` while doing tasks and while interacting with the user.
 - Always sync and condense `MEMORY.md` after finishing a task or at commit time.
 - Always update `MEMORY.md` when instructed to remember something.
+- `MEMORY.md` is intentionally git-ignored in this repository; do not force-add or commit it.
 - When a commit is done by the agent, always include a co-author trailer for the agent in the commit message.
 
 ## MEMORY.md Purpose
