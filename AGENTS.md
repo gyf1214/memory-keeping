@@ -9,8 +9,10 @@ This project builds an agent skill that can memorize information across sessions
 - Avoid premature decisions; refine behavior in later steps with the user.
 - Self-improvement-loop mechanics and implicit skill telemetry are out of scope for the current version.
 
-## Repository Layout (Current)
-- `SKILL.md`: Primary skill definition (current version completed for now).
+## Repository Layout
+- `SKILL.md`: Primary operator-core skill definition.
+- `references/file-context.md`: Detailed file inputs/outputs, locations, and edit boundaries.
+- `references/memory-operations.md`: Detailed data model, maintenance rules, verification checks, and common mistakes.
 - `AGENTS.md`: Project guidance for agents working in this repository.
 - `MEMORY.md`: Working memory for progress tracking and continuity.
 
