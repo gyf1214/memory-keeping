@@ -6,31 +6,37 @@ description: Use when working on a process for memorizing and reusing project an
 # Memory Keeping Skill
 
 ## Overview
-- Maintain memory in two top-level buckets:
-- `project`: information specific to the current repository/workstream.
-- `global`: reusable cross-project knowledge.
-- Use one shared internal layer schema in both buckets so extraction, updates, and retrieval stay consistent.
+- This skill defines how an agent captures, stores, and reuses high-signal memory across sessions.
+- It uses two buckets (`project`, `global`) with a shared layer schema for consistent extraction, updates, and retrieval.
 
 ## When to Use
+- This section describes concrete triggers and boundaries for when this skill should and should not be used.
 - [Outline placeholder]
 
 ## Inputs
-- Instruction/context files to read:
+- Required instruction/context files:
 - Global agent instructions: `AGENTS.md` in the agent home directory.
 - Project agent instructions: `AGENTS.md` in the project directory.
 - Project local-user instructions: `LOCAL.md` in the project directory (when present).
 - Project memory: project `MEMORY.md`.
 - Global memory: global `MEMORY.md`.
+- Runtime working inputs:
+- Current user instructions and conversation context.
+- Relevant project artifacts that may contain durable knowledge (for example design notes, plans, and meeting records).
+- Explicit user directives to remember, update, or remove memory entries.
 
 ## Outputs
+- This section defines what memory updates, references, and persisted artifacts this skill produces.
 - [Outline placeholder]
 
 ## Workflow
+- This section defines the ordered end-to-end process for reading context, extracting knowledge, writing memory, and condensing.
 1. [Outline placeholder]
 2. [Outline placeholder]
 3. [Outline placeholder]
 
 ## Quick Reference
+- This section provides a compact operator-facing checklist for common memory actions.
 - [Outline placeholder]
 
 ## Data Model
@@ -45,16 +51,6 @@ description: Use when working on a process for memorizing and reusing project an
 - `global` bucket is stored in `MEMORY.md` in the agent home directory.
 - Agent should determine home and project directories from its runtime context.
 - Codex example (not a universal rule): global memory may resolve to `$CODEX_HOME/MEMORY.md` or `~/.codex/MEMORY.md`.
-- File creation behavior:
-- If project `MEMORY.md` is missing, create it automatically.
-- If global `MEMORY.md` is missing, create it automatically.
-- When creating a new memory file, initialize a minimal skeleton.
-- Do not pre-populate all layers at creation time because some layers may not apply.
-- Add layer sections incrementally only when they become relevant.
-- Minimal skeleton content:
-- `# MEMORY`
-- `## Rules`
-- The same minimal skeleton applies to both project and global memory files.
 - Shared internal layers (for each bucket):
 - `facts`: observed or verified state.
 - `decisions`: chosen direction with rationale.
@@ -63,11 +59,6 @@ description: Use when working on a process for memorizing and reusing project an
 - `plan`: intended next actions and sequence.
 - Entry format:
 - Grouped notes are allowed; strict atomic-only items are not required.
-- Rationale policy:
-- Keep rationale text in `decisions` entries only; keep other layers concise.
-- Rule wording convention:
-- Hard constraints use explicit language such as `always` and `do not`.
-- Soft guidance uses explicit language such as `should` and `avoid`.
 
 ## Extraction Rules
 - Default extraction policy:
@@ -92,9 +83,26 @@ description: Use when working on a process for memorizing and reusing project an
 - Keep memory consistent with source documents; remove or update stale memory entries immediately when source documents change.
 
 ## Update Rules
+- This section defines when and how memory files are created, modified, condensed, and corrected over time.
+- File creation behavior:
+- If project `MEMORY.md` is missing, create it automatically.
+- If global `MEMORY.md` is missing, create it automatically.
+- When creating a new memory file, initialize a minimal skeleton.
+- Minimal skeleton content:
+- `# MEMORY`
+- `## Rules`
+- The same minimal skeleton applies to both project and global memory files.
+- Layer lifecycle behavior:
+- Do not pre-populate all layers at creation time because some layers may not apply.
+- Add layer sections incrementally only when they become relevant.
+- Content maintenance behavior:
+- Keep rationale text in `decisions` entries only; keep other layers concise.
+- Hard constraints use explicit language such as `always` and `do not`.
+- Soft guidance uses explicit language such as `should` and `avoid`.
 - [Outline placeholder]
 
 ## Self-Improvement Loop
+- This section defines how the skill improves itself from usage outcomes without drifting from core constraints.
 - [Outline placeholder]
 
 ## Safety and Constraints
@@ -110,7 +118,9 @@ description: Use when working on a process for memorizing and reusing project an
 - Generic storage conventions in this skill are fallback defaults only.
 
 ## Verification
+- This section defines checks to confirm memory quality, consistency, and instruction compliance after updates.
 - [Outline placeholder]
 
 ## Common Mistakes
+- This section lists frequent failure modes and the corrective action for each.
 - [Outline placeholder]
