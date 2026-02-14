@@ -30,6 +30,9 @@ description: Use when working on a process for memorizing and reusing project an
 2. [Outline placeholder]
 3. [Outline placeholder]
 
+## Quick Reference
+- [Outline placeholder]
+
 ## Data Model
 - Top-level buckets:
 - `project`
@@ -109,5 +112,5 @@ description: Use when working on a process for memorizing and reusing project an
 ## Verification
 - [Outline placeholder]
 
-## Open Questions
+## Common Mistakes
 - [Outline placeholder]
