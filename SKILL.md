@@ -85,7 +85,8 @@ description: Use when working on a process for memorizing and reusing project an
 - Relationship to design notes, meeting minutes, and plans:
 - Do not mirror full content of these documents into memory.
 - Store compact references to source files instead of duplicating large note content.
-- Keep memory consistent with source documents; remove or update stale memory entries when source documents change.
+- Reference format is intentionally free-form (no required template).
+- Keep memory consistent with source documents; remove or update stale memory entries immediately when source documents change.
 
 ## Update Rules
 - [Outline placeholder]
