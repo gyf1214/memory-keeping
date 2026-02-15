@@ -37,9 +37,11 @@ Codex example:
 - Keep references current when source artifacts change.
 - Do not edit `AGENTS.md` or `LOCAL.md` unless explicitly instructed by the user.
 - Edit project-specific non-memory files only when project instructions explicitly require those edits.
+- Keep project `LOCAL.md` and project `MEMORY.md` ignored by git (for example via project `.gitignore`).
 
 ## Missing-File Behavior
 - If project or global `MEMORY.md` is missing, create:
   - `# MEMORY`
   - `## Rules`
 - Use the same minimal skeleton for both project and global memory files.
+- When creating a project `MEMORY.md`, ensure the project `.gitignore` includes both `MEMORY.md` and `LOCAL.md`.

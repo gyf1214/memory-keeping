@@ -8,10 +8,7 @@ This reference defines the detailed operating model for memory structure, extrac
   - `global`
 - Storage:
   - Markdown sections (no rigid per-entry schema).
-  - `project` bucket in project `MEMORY.md`.
-  - `global` bucket in home `MEMORY.md`.
-  - Agent resolves home/project paths from runtime context.
-  - Codex example (non-binding): global memory may be `$CODEX_HOME/MEMORY.md` or `~/.codex/MEMORY.md`.
+  - File locations and path-resolution conventions are defined in `references/file-context.md` (`Files Involved`).
 - Shared layers in each bucket:
   - `facts`: observed or verified state.
   - `decisions`: chosen direction with rationale.

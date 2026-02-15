@@ -30,7 +30,7 @@ description: Use when starting a session, when asked to remember/correct/forget 
    - Read required instruction/memory files from `references/file-context.md`.
    - Read relevant project source-of-truth artifacts for the current task.
 2. Ensure memory files exist.
-   - If project/global `MEMORY.md` is missing, create the minimal skeleton from `references/file-context.md` (`Missing-File Behavior`).
+   - If project/global `MEMORY.md` is missing, create the minimal skeleton and apply ignore-file rules from `references/file-context.md` (`Missing-File Behavior`).
 3. Update during work.
    - Apply extraction and update lifecycle rules from `references/memory-operations.md` (`Extraction Rules`, `Update Rules`).
    - Apply explicit remember/correct/forget requests immediately.
