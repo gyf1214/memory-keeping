@@ -1,56 +1,51 @@
 ---
 name: memory-consolidation
-description: Use at explicit or inferred task boundaries to reconcile, condense, and verify project/global memory.
+description: Use at task boundaries to reconcile, clean, and verify project/global memory.
 ---
 
 # Memory Consolidation Skill
 
-## Overview
-- This skill defines end-of-task memory maintenance.
-- It reconciles and condenses high-signal memory across `project` and `global` buckets.
-- It performs best-effort verification before task completion claims.
+## Scope
+- This skill runs at task boundaries only.
+- It updates memory quality, resolves drift, and preserves only durable signal.
 
-## When to Use
-- At explicit task boundaries (for example user says task is done).
-- At inferred boundaries (for example before/after `git commit`).
-- After substantial work when memory may contain overlap, drift, or stale references.
+## Data Model
+- Buckets (scope): `project`, `global`
+- Layers:
+  - `project`: `facts`, `rules`, `open_questions`, `future_jobs`
+  - `global`: `facts`, `rules`
+- Entry importance:
+  - Use or adjust `importance: low|medium|high|critical` when recall priority is underweighted.
 
-## Relevant Files
-- File inputs/outputs and edit boundaries are defined in `references/file-context.md`.
-- Primary maintained files are project/global `MEMORY.md`.
+## File Context
+- Global memory file: global `MEMORY.md`
+- Project memory file: project `MEMORY.md`
+- Precedence rule:
+  - `system/developer -> global MEMORY.md -> project AGENTS.md -> project MEMORY.md`
 
-## Workflow
-1. Load context.
-   - Read required instruction/memory files from `references/file-context.md`.
-   - Read relevant source-of-truth project artifacts changed during the task.
-2. Reconcile memory state.
-   - Merge or replace overlapping entries.
-   - Resolve active contradictions by keeping current best-known state in `facts` and rationale in `decisions`.
-3. Condense memory.
-   - Remove stale, redundant, and journal-like content.
-   - Preserve durable high-signal facts, decisions, rules, open questions, and plan entries.
-4. Verify and record uncertainty.
-   - Apply verification checks from `references/memory-operations.md` (`Verification`).
-   - If checks are skipped or uncertain, record that in `open_questions`.
-5. Finalize task boundary.
-   - Ensure both buckets are coherent and concise for next-session reuse.
+## When To Use
+- At explicit task boundaries (for example, task done).
+- At inferred boundaries (for example, before completion claims or commit finalization).
 
-## Quick Reference
-- Trigger map:
-  - Task boundary reached: run full consolidation pass.
-  - Commit boundary reached: run consolidation before completion claims.
-- If X, do Y:
-  - If uncertain and not verifiable in-session, store in `open_questions`.
-  - If entries overlap, merge or replace instead of appending.
-  - If guidance is reusable across projects, promote to `global` in context-agnostic wording.
+## Task-Boundary Workflow
+1. Review the session log for this task.
+2. Compare session log, project `MEMORY.md`, and global `MEMORY.md`.
+3. Remove duplicates and outdated/conflicting entries.
+4. Add missing high-signal information from the session log.
+5. Find memory items the agent failed to recall during the session; add or raise `importance`.
+6. Promote reusable items by move (not copy) from project memory to global memory.
+7. Keep only incomplete `future_jobs`; remove completed jobs while preserving key facts.
+8. For autonomous choices made without user confirmation (for example work-alone choices), put issue, chosen action, and rationale in `open_questions` instead of settled facts.
 
-## Safety and Constraints
-- Instruction precedence: apply `AGENTS.md` -> `LOCAL.md` -> `MEMORY.md`.
-- Do not edit `AGENTS.md` or `LOCAL.md` unless explicitly instructed by the user.
-- File loading and location details are defined in `references/file-context.md`.
-
-## Verification
-- Verification checks and fallback behavior are defined in `references/memory-operations.md` (`Verification`).
+## Verification Rules
+- No duplication.
+- No outdated or conflicting active information.
+- No journals, histories, commit hashes, dates, or timeline logs.
+- Keep only concise durable memory.
+- Avoid unnecessary rationale after a decision is settled.
 
 ## Common Mistakes
-- Common mistakes and corrective actions are defined in `references/memory-operations.md` (`Common Mistakes`).
+- Forget to review the session log before editing memory.
+- Forget to remove completed `future_jobs`.
+- Forget to move reusable project memory into global memory.
+- Forget to record autonomous unresolved choices in `open_questions`.
