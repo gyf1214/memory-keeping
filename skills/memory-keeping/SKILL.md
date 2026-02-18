@@ -1,6 +1,6 @@
 ---
 name: memory-keeping
-description: Use at session start, when asked to remember information, and when high-signal information emerges during a session.
+description: Use when starting a session, when asked to remember information, or when high-signal information emerges during a session.
 ---
 
 # Memory Keeping Skill
@@ -10,12 +10,12 @@ description: Use at session start, when asked to remember information, and when 
 - It does not perform task-boundary consolidation.
 
 ## Data Model
-- Buckets (scope): `project`, `global`
+- Scopes: `project`, `global`
 - Layers:
-  - `project`: `facts`, `rules`, `open_questions`, `future_jobs`
+  - `project`: `facts`, `rules`, `decisions`, `open_questions`, `future_jobs`
   - `global`: `facts`, `rules`
 - Entry importance:
-  - Add `importance: low|medium|high|critical` when usefulness or recall priority should be explicit.
+  - `importance: low|medium|high|critical`.
 
 ## File Context
 - Global memory file: global `MEMORY.md`
@@ -35,11 +35,11 @@ description: Use at session start, when asked to remember information, and when 
 4. Apply precedence: `system/developer -> global MEMORY.md -> project AGENTS.md -> project MEMORY.md`.
 
 ## Workflow B: Record During Session
-1. Identify bucket: `project` or `global`.
-2. Identify layer for that bucket.
-3. Add or merge the entry (include `importance` when needed).
+1. Identify scope: `project` or `global`.
+2. Identify layer for that scope.
+3. Add or merge the entry.
 
-If bucket is unclear, ask:
+If scope is unclear, ask:
 - "Does this apply to all projects or only this project?"
 
 ## Extraction Rules
@@ -48,6 +48,6 @@ If bucket is unclear, ask:
 - Avoid journaling activity logs, timestamps, or commit-level narration.
 
 ## Common Mistakes
-- Forget to ask when bucket choice is unclear.
+- Forget to read global or project memory.
+- Forget to ask when scope choice is unclear.
 - Forget to merge overlapping entries.
-- Forget to set `importance` when recall priority matters.

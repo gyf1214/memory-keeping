@@ -1,6 +1,6 @@
 ---
 name: memory-consolidation
-description: Use at task boundaries to reconcile, clean, and verify project/global memory.
+description: Use when a task boundary is reached and end-of-task memory maintenance is required.
 ---
 
 # Memory Consolidation Skill
@@ -10,12 +10,12 @@ description: Use at task boundaries to reconcile, clean, and verify project/glob
 - It updates memory quality, resolves drift, and preserves only durable signal.
 
 ## Data Model
-- Buckets (scope): `project`, `global`
+- Scopes: `project`, `global`
 - Layers:
-  - `project`: `facts`, `rules`, `open_questions`, `future_jobs`
+  - `project`: `facts`, `rules`, `decisions`, `open_questions`, `future_jobs`
   - `global`: `facts`, `rules`
 - Entry importance:
-  - Use or adjust `importance: low|medium|high|critical` when recall priority is underweighted.
+  - `importance: low|medium|high|critical`
 
 ## File Context
 - Global memory file: global `MEMORY.md`
@@ -33,9 +33,10 @@ description: Use at task boundaries to reconcile, clean, and verify project/glob
 3. Remove duplicates and outdated/conflicting entries.
 4. Add missing high-signal information from the session log.
 5. Find memory items the agent failed to recall during the session; add or raise `importance`.
-6. Promote reusable items by move (not copy) from project memory to global memory.
-7. Keep only incomplete `future_jobs`; remove completed jobs while preserving key facts.
-8. For autonomous choices made without user confirmation (for example work-alone choices), put issue, chosen action, and rationale in `open_questions` instead of settled facts.
+6. Promote reusable items by moving (not copying) from project memory to global memory.
+   - If uncertain whether promotion is appropriate, ask the user before moving it to global memory.
+7. Keep only incomplete `future_jobs`; remove completed jobs while preserving key facts and decisions.
+8. For autonomous choices made without user confirmation (for example work-alone choices), put issue, chosen action, and rationale in `open_questions` instead of settled facts or settled decisions.
 
 ## Verification Rules
 - No duplication.
