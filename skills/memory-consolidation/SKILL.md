@@ -21,24 +21,27 @@ description: Use when a task boundary is reached and end-of-task memory maintena
 - Global memory file: global `MEMORY.md`
 - Project memory file: project `MEMORY.md`
 - Conflict resolution order (highest to lowest):
-  - `system/developer -> chat -> project MEMORY.md -> project AGENTS.md -> global MEMORY.md`
+  - `system/developer -> chat -> project MEMORY.md -> global MEMORY.md`
 
 ## When To Use
 - At explicit task boundaries (for example, task done).
 - At inferred boundaries (for example, before completion claims or commit finalization).
 
 ## Task-Boundary Workflow
-1. Review the session log for this task.
-2. Compare session log, project `MEMORY.md`, and global `MEMORY.md`.
-3. Remove duplicate entries.
-4. Shorten entries to concise, durable statements.
-5. Remove outdated or conflicting entries.
-6. Add missing high-signal information from the session log.
-7. Find memory items the agent failed to recall during the session; add or raise `importance`.
-8. Promote reusable items by moving (not copying) from project memory to global memory.
+1. If global `MEMORY.md` is missing, create it.
+2. If project `MEMORY.md` is missing, create it and ensure `MEMORY.md` is in project `.gitignore`.
+3. Review the session log for this task.
+4. Read global `MEMORY.md`.
+5. Read project `MEMORY.md`.
+6. Remove duplicate entries.
+7. Shorten entries to concise, durable statements.
+8. Remove outdated or conflicting entries.
+9. Add missing high-signal information from the session log.
+10. Find memory items the agent failed to recall during the session; add or raise `importance`.
+11. Promote reusable items by moving (not copying) from project memory to global memory.
    - If uncertain whether promotion is appropriate, ask the user before moving it to global memory.
-9. Keep only incomplete `future_jobs`; remove completed jobs while preserving key facts and decisions.
-10. For autonomous choices made without user confirmation (for example work-alone choices), put issue, chosen action, and rationale in `open_questions` instead of settled facts or settled decisions.
+12. Keep only incomplete `future_jobs`; remove completed jobs while preserving key facts and decisions.
+13. For autonomous choices made without user confirmation (for example work-alone choices), put issue, chosen action, and rationale in `open_questions` instead of settled facts or settled decisions.
 
 ## Verification Rules
 - No duplication.
@@ -49,6 +52,7 @@ description: Use when a task boundary is reached and end-of-task memory maintena
 
 ## Common Mistakes
 - Forget to review the session log before editing memory.
+- Forget to read both global and project memory files.
 - Forget to remove completed `future_jobs`.
 - Forget to move reusable project memory into global memory.
 - Forget to record autonomous unresolved choices in `open_questions`.
