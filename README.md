@@ -9,11 +9,7 @@ Memory Keeping is an agent skill project for capturing, maintaining, and consoli
 
 ## Repository Structure
 - `skills/memory-keeping/SKILL.md`: In-session memory capture/update workflow.
-- `skills/memory-keeping/references/file-context.md`: File locations, boundaries, and context-loading details for memory capture.
-- `skills/memory-keeping/references/memory-operations.md`: Data model and update rules for active work.
 - `skills/memory-consolidation/SKILL.md`: End-of-task memory reconcile/condense workflow.
-- `skills/memory-consolidation/references/file-context.md`: File locations and boundaries for consolidation.
-- `skills/memory-consolidation/references/memory-operations.md`: Reconcile, condense, and verification rules.
 
 ## Installation
 Install each skill subdirectory from `skills/` into your agent's skills directory; the exact path depends on the agent architecture.

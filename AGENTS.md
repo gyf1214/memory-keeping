@@ -13,11 +13,7 @@ This project builds agent skills that memorize information across sessions, extr
 
 ## Repository Layout
 - `skills/memory-keeping/SKILL.md`: In-session memory capture/update skill definition.
-- `skills/memory-keeping/references/file-context.md`: Detailed file inputs/outputs, locations, and edit boundaries.
-- `skills/memory-keeping/references/memory-operations.md`: Data model and maintenance rules for active updates.
 - `skills/memory-consolidation/SKILL.md`: Task-boundary consolidation skill definition.
-- `skills/memory-consolidation/references/file-context.md`: File context and boundaries for consolidation.
-- `skills/memory-consolidation/references/memory-operations.md`: Reconcile, condensation, verification checks, and common mistakes.
 - `AGENTS.md`: Project guidance for agents working in this repository.
 - `MEMORY.md`: Working memory for progress tracking and continuity.
 
