@@ -30,13 +30,15 @@ description: Use when a task boundary is reached and end-of-task memory maintena
 ## Task-Boundary Workflow
 1. Review the session log for this task.
 2. Compare session log, project `MEMORY.md`, and global `MEMORY.md`.
-3. Remove duplicates and outdated/conflicting entries.
-4. Add missing high-signal information from the session log.
-5. Find memory items the agent failed to recall during the session; add or raise `importance`.
-6. Promote reusable items by moving (not copying) from project memory to global memory.
+3. Remove duplicate entries.
+4. Shorten entries to concise, durable statements.
+5. Remove outdated or conflicting entries.
+6. Add missing high-signal information from the session log.
+7. Find memory items the agent failed to recall during the session; add or raise `importance`.
+8. Promote reusable items by moving (not copying) from project memory to global memory.
    - If uncertain whether promotion is appropriate, ask the user before moving it to global memory.
-7. Keep only incomplete `future_jobs`; remove completed jobs while preserving key facts and decisions.
-8. For autonomous choices made without user confirmation (for example work-alone choices), put issue, chosen action, and rationale in `open_questions` instead of settled facts or settled decisions.
+9. Keep only incomplete `future_jobs`; remove completed jobs while preserving key facts and decisions.
+10. For autonomous choices made without user confirmation (for example work-alone choices), put issue, chosen action, and rationale in `open_questions` instead of settled facts or settled decisions.
 
 ## Verification Rules
 - No duplication.
