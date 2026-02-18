@@ -1,20 +1,29 @@
 # AGENTS.md
 
 ## Project Purpose
-This project builds an agent skill that can memorize information across sessions, extract both project-specific and global knowledge, and improve its own process over time.
+This project builds agent skills that memorize information across sessions, extract both project-specific and global knowledge, and improve process continuity over time.
 
 ## Scope
-- Define the skill workflow and supporting artifacts in this repository.
+- Define the two-skill workflow in this repository:
+  - `memory-keeping` for session-start and in-session memory updates.
+  - `memory-consolidation` for end-of-task reconcile/condense/verification.
 - Keep implementation process-oriented and iterative.
 - Avoid premature decisions; refine behavior in later steps with the user.
 - Self-improvement-loop mechanics and implicit skill telemetry are out of scope for the current version.
 
 ## Repository Layout
-- `memory-keeping/SKILL.md`: Primary operator-core skill definition.
-- `memory-keeping/references/file-context.md`: Detailed file inputs/outputs, locations, and edit boundaries.
-- `memory-keeping/references/memory-operations.md`: Detailed data model, maintenance rules, verification checks, and common mistakes.
+- `skills/memory-keeping/SKILL.md`: In-session memory capture/update skill definition.
+- `skills/memory-keeping/references/file-context.md`: Detailed file inputs/outputs, locations, and edit boundaries.
+- `skills/memory-keeping/references/memory-operations.md`: Data model and maintenance rules for active updates.
+- `skills/memory-consolidation/SKILL.md`: Task-boundary consolidation skill definition.
+- `skills/memory-consolidation/references/file-context.md`: File context and boundaries for consolidation.
+- `skills/memory-consolidation/references/memory-operations.md`: Reconcile, condensation, verification checks, and common mistakes.
 - `AGENTS.md`: Project guidance for agents working in this repository.
 - `MEMORY.md`: Working memory for progress tracking and continuity.
+
+## Available Skills
+- `memory-keeping`: `skills/memory-keeping/SKILL.md`
+- `memory-consolidation`: `skills/memory-consolidation/SKILL.md`
 
 ## Working Rules
 - Always read `MEMORY.md` at the beginning of any task.
