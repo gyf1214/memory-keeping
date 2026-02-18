@@ -20,8 +20,8 @@ description: Use when a task boundary is reached and end-of-task memory maintena
 ## File Context
 - Global memory file: global `MEMORY.md`
 - Project memory file: project `MEMORY.md`
-- Precedence rule:
-  - `system/developer -> global MEMORY.md -> project AGENTS.md -> project MEMORY.md`
+- Conflict resolution order (highest to lowest):
+  - `system/developer -> chat -> project MEMORY.md -> project AGENTS.md -> global MEMORY.md`
 
 ## When To Use
 - At explicit task boundaries (for example, task done).

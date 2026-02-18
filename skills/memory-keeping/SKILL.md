@@ -20,8 +20,8 @@ description: Use when starting a session, when asked to remember information, or
 ## File Context
 - Global memory file: global `MEMORY.md`
 - Project memory file: project `MEMORY.md`
-- Precedence rule:
-  - `system/developer -> global MEMORY.md -> project AGENTS.md -> project MEMORY.md`
+- Conflict resolution order (highest to lowest):
+  - `system/developer -> chat -> project MEMORY.md -> project AGENTS.md -> global MEMORY.md`
 
 ## When To Use
 - Beginning of a session
@@ -32,7 +32,7 @@ description: Use when starting a session, when asked to remember information, or
 1. Read global `MEMORY.md`.
 2. Read project `AGENTS.md`.
 3. Read project `MEMORY.md`.
-4. Apply precedence: `system/developer -> global MEMORY.md -> project AGENTS.md -> project MEMORY.md`.
+4. Apply the conflict resolution order defined above.
 
 ## Workflow B: Record During Session
 1. Identify scope: `project` or `global`.
