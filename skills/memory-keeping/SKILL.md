@@ -1,57 +1,53 @@
 ---
 name: memory-keeping
-description: Use when starting a session, when asked to remember/correct/forget information, or when high-signal memory-worthy details emerge during work.
+description: Use at session start, when asked to remember information, and when high-signal information emerges during a session.
 ---
 
 # Memory Keeping Skill
 
-## Overview
-- This skill defines how an agent captures and updates high-signal memory during active work.
-- It uses two buckets (`project`, `global`) with shared layers for consistent updates and retrieval.
-- End-of-task reconciliation and condensation are handled by `memory-consolidation`.
-
-## When to Use
-- Session start: load instruction and memory context before substantive work.
-- In session: update memory when the user asks to remember/correct/forget, or when high-signal durable information emerges.
-- Do not use this skill to keep a step-by-step activity journal.
-
-## Relevant Files
-- File inputs/outputs and edit boundaries are defined in `references/file-context.md`.
-- Primary maintained files are project/global `MEMORY.md`.
-- Project-specific non-memory file edits are only allowed when explicitly required by project instructions.
+## Scope
+- This skill is for loading memory and recording new memory during active work.
+- It does not perform task-boundary consolidation.
 
 ## Data Model
-- Buckets: `project`, `global`.
-- Layers: `facts`, `decisions`, `rules`, `open_questions`, `plan`.
-- Explanations and storage conventions are defined in `references/memory-operations.md` (`Data Model`).
+- Buckets (scope): `project`, `global`
+- Layers:
+  - `project`: `facts`, `rules`, `open_questions`, `future_jobs`
+  - `global`: `facts`, `rules`
+- Entry importance:
+  - Add `importance: low|medium|high|critical` when usefulness or recall priority should be explicit.
 
-## Workflow
-1. Load context.
-   - Read required instruction/memory files from `references/file-context.md`.
-   - Read relevant project source-of-truth artifacts for the current task.
-2. Ensure memory files exist.
-   - If project/global `MEMORY.md` is missing, create the minimal skeleton and apply ignore-file rules from `references/file-context.md` (`Missing-File Behavior`).
-3. Update during work.
-   - Apply extraction and update lifecycle rules from `references/memory-operations.md` (`Extraction Rules`, `Update Rules`).
-   - Apply explicit remember/correct/forget requests immediately.
-4. Handoff at task boundary.
-   - When a task boundary is reached (for example `git commit`), invoke `memory-consolidation` for end-of-task memory maintenance.
+## File Context
+- Global memory file: global `MEMORY.md`
+- Project memory file: project `MEMORY.md`
+- Precedence rule:
+  - `system/developer -> global MEMORY.md -> project AGENTS.md -> project MEMORY.md`
 
-## Quick Reference
-- Trigger map:
-  - Session start: load context and ensure memory files exist.
-  - During work: capture high-signal updates; apply explicit remember/correct/forget requests immediately.
-  - Task end: hand off to `memory-consolidation`.
-- If X, do Y:
-  - If information is uncertain, store it in `open_questions` (not `facts`).
-  - If entry meanings overlap, merge or replace instead of appending.
-  - If rationale is needed, store it in `decisions`.
-  - If guidance is reusable across projects, consider promotion from `project` to `global`.
+## When To Use
+- Beginning of a session
+- User asks to remember information
+- High-signal information appears during a session
 
-## Maintenance Rules
-- Extraction and update lifecycle details are defined in `references/memory-operations.md` (`Extraction Rules`, `Update Rules`).
+## Workflow A: Load Memory At Session Start
+1. Read global `MEMORY.md`.
+2. Read project `AGENTS.md`.
+3. Read project `MEMORY.md`.
+4. Apply precedence: `system/developer -> global MEMORY.md -> project AGENTS.md -> project MEMORY.md`.
 
-## Safety and Constraints
-- Instruction precedence: apply `AGENTS.md` -> `LOCAL.md` -> `MEMORY.md`.
-- Do not edit `AGENTS.md` or `LOCAL.md` unless explicitly instructed by the user.
-- File loading, precedence interpretation examples, and location overrides are defined in `references/file-context.md`.
+## Workflow B: Record During Session
+1. Identify bucket: `project` or `global`.
+2. Identify layer for that bucket.
+3. Add or merge the entry (include `importance` when needed).
+
+If bucket is unclear, ask:
+- "Does this apply to all projects or only this project?"
+
+## Extraction Rules
+- Capture only high-signal durable memory.
+- Keep entries concise and actionable.
+- Avoid journaling activity logs, timestamps, or commit-level narration.
+
+## Common Mistakes
+- Forget to ask when bucket choice is unclear.
+- Forget to merge overlapping entries.
+- Forget to set `importance` when recall priority matters.
