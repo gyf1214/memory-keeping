@@ -1,6 +1,6 @@
 ---
 name: memory-consolidation
-description: Use when a task boundary is reached and end-of-task memory maintenance is required.
+description: Use when an explicit or implicit end-to-end execution boundary is reached after user feedback is addressed.
 ---
 
 # Memory Consolidation Skill
@@ -27,7 +27,8 @@ description: Use when a task boundary is reached and end-of-task memory maintena
   - `system/developer -> chat -> project MEMORY.md -> global MEMORY.md`
 
 ## When To Use
-- At explicit or inferred task boundaries (for example, task done, completion claim, or commit finalization).
+- Trigger: an explicit or implicit end-to-end execution boundary after user feedback is addressed.
+- Examples: feature design is finalized and documented; plan execution is finished and raised issues were addressed with the user.
 
 ## Task-Boundary Workflow
 1. Read global `MEMORY.md`, project `MEMORY.md`, and relevant design docs or project index documents.
