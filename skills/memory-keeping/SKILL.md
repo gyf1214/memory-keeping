@@ -6,16 +6,19 @@ description: Use when starting a session, when asked to remember information, or
 # Memory Keeping Skill
 
 ## Scope
-- Load memory and record durable memory during active work.
+- Load memory and capture candidate memory during active work.
 - Not for task-boundary consolidation.
 
 ## Data Model
 - Scopes: `project`, `global`
 - Layers:
-  - `project`: `facts`, `rules`, `decisions`, `open_questions`, `future_jobs`
-  - `global`: `facts`, `rules`
-- Entry importance:
-  - `importance: low|medium|high|critical`
+  - `project`: `Knowledge`, `Rule`, `Work`, `Reference`, `Journal`
+  - `global`: `Knowledge`, `Rules`
+- `Work` ordering:
+  - `Work` is an ordered queue; the top item is the next actionable work.
+- Section meaning authority:
+  - `memory-consolidation` defines canonical section semantics and inclusion/exclusion rules.
+  - `memory-keeping` focuses on reading memory and capturing project updates into `Journal`.
 
 ## File Context
 - Global memory file: global `MEMORY.md`
@@ -37,18 +40,22 @@ description: Use when starting a session, when asked to remember information, or
 7. If blocked or failing, re-read global then project memory before other debugging.
 
 ## Workflow B: Record During Session
-1. Identify scope: `project` or `global`.
-2. Identify layer for that scope.
-3. Add or merge the entry.
+1. Identify whether the candidate memory seems project-scoped or reusable across projects.
+2. Write the candidate entry to project `Journal` first.
+3. Defer persistent placement (`project/*` or `global/*`) to `memory-consolidation`.
+4. Exception: if the user explicitly asks to remember something globally now, add or merge it in global `Knowledge` or `Rules` and also leave a brief `Journal` note so consolidation can re-check it.
 
 If scope is unclear, ask:
 - "Does this apply to all projects or only this project?"
 
 ## Extraction Rules
-- Capture only high-signal durable memory.
+- Capture only information that is really useful and important for a project design point or workflow.
 - Keep entries concise and actionable.
-- Avoid journals, timestamps, and commit narration.
+- During active work, use `Journal` as temporary capture and avoid direct writes to persistent project sections.
+- Default to no direct global writes during active work; use consolidation promotion as the normal path.
+- Avoid timestamps and commit narration.
 
 ## Common Mistakes
 - Forget to read global memory first.
 - Forget to ask when scope choice is unclear.
+- Writing directly to global memory without explicit user request.
