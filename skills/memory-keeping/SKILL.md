@@ -7,15 +7,13 @@ description: Use when starting a session, when asked to remember information, or
 
 ## Scope And Use
 - Use at session start, explicit remember requests, or when high-signal durable memory appears during active work.
-- This skill loads memory and captures candidate memory; it does not do task-boundary consolidation.
+- This skill loads memory and captures candidate memory during active work.
 
 ## File Context
 - Global memory file: global `MEMORY.md`
 - Project memory file: project `MEMORY.md`
 - Conflict resolution order (highest to lowest):
   - `system/developer -> chat -> project MEMORY.md -> global MEMORY.md`
-- Section semantics authority:
-  - `memory-consolidation` defines canonical section inclusion/exclusion rules.
 
 ## Workflow A: Load Memory At Session Start
 1. If global `MEMORY.md` is missing, create it.
