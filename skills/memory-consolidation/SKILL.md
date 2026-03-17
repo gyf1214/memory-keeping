@@ -31,7 +31,8 @@ description: Use when a task boundary is reached and end-of-task memory maintena
 
 ## Task-Boundary Workflow
 1. Read global `MEMORY.md`, project `MEMORY.md`, and relevant design docs or project index documents.
-2. Process `Journal` top-to-bottom and apply exactly one disposition per entry: move to `Knowledge`/`Rule`/`Work`/`Reference`, convert unresolved items to `Work` as `Decide on <topic>`, update docs and keep only a brief memory reference, or discard non-durable/duplicate items.
+2. Process `Journal` top-to-bottom and apply exactly one disposition per entry: move to `Knowledge`/`Rule`/`Work`/`Reference`, update docs and keep only a brief memory reference, or discard non-durable/duplicate items.
+   - For open-question entries: ask the user when the current work allows. If the user confirms direction, move the result to the related section and/or design doc. If no decision is made, add `Work` as `Decide on <topic>`.
 3. Normalize persistent memory: keep `Work` ordered with next action at top and remove completed items; remove duplicates/conflicts; shorten entries; keep detailed design content in docs with only brief memory references.
 4. Promote reusable items by moving (not copying) to global `Knowledge`/`Rules`, prioritizing reviewed `Journal` entries and using project persistent entries when needed.
    - If uncertain whether promotion is appropriate, ask the user before moving it to global memory.
@@ -39,6 +40,20 @@ description: Use when a task boundary is reached and end-of-task memory maintena
    - ALL `Journal` entries were reviewed;
    - `Journal` is empty;
    - persisted memory is concise, current, and design/workflow relevant.
+
+## Quick Reference
+| If Journal entry is... | Do this |
+|---|---|
+| Durable project knowledge | Move to `Knowledge` |
+| Workflow constraint | Move to `Rule` |
+| Open question | Ask user if current work allows; confirmed -> move to related section/doc, deferred -> `Work`: `Decide on <topic>` |
+| Duplicated, stale, or non-durable | Discard |
+
+## Example
+Journal entry: "Should global promotion require user confirmation when uncertain?"  
+Disposition: Ask the user first because promotion policy is uncertain.  
+If user confirms, move the finalized policy into `Rule` (and to global `Rules` if reusable).  
+If user defers, add `Work`: `Decide on uncertain global-promotion default`.
 
 ## Verification Rules
 - No duplicates, conflicts, or outdated active information.
