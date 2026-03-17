@@ -5,30 +5,17 @@ description: Use when starting a session, when asked to remember information, or
 
 # Memory Keeping Skill
 
-## Scope
-- Load memory and capture candidate memory during active work.
-- Not for task-boundary consolidation.
-
-## Data Model
-- Scopes: `project`, `global`
-- Layers:
-  - `project`: `Knowledge`, `Rule`, `Work`, `Reference`, `Journal`
-  - `global`: `Knowledge`, `Rules`
-- `Work` ordering:
-  - `Work` is an ordered queue; the top item is the next actionable work.
-- Section meaning authority:
-  - `memory-consolidation` defines canonical section semantics and inclusion/exclusion rules.
-  - `memory-keeping` focuses on reading memory and capturing project updates into `Journal`.
+## Scope And Use
+- Use at session start, explicit remember requests, or when high-signal durable memory appears during active work.
+- This skill loads memory and captures candidate memory; it does not do task-boundary consolidation.
 
 ## File Context
 - Global memory file: global `MEMORY.md`
 - Project memory file: project `MEMORY.md`
 - Conflict resolution order (highest to lowest):
   - `system/developer -> chat -> project MEMORY.md -> global MEMORY.md`
-
-## When To Use
-- Session start
-- Explicit remember request or new high-signal durable memory
+- Section semantics authority:
+  - `memory-consolidation` defines canonical section inclusion/exclusion rules.
 
 ## Workflow A: Load Memory At Session Start
 1. If global `MEMORY.md` is missing, create it.
@@ -39,15 +26,10 @@ description: Use when starting a session, when asked to remember information, or
 6. Apply conflict order.
 
 ## Workflow B: Record During Session
-1. Write the candidate entry to project `Journal` first.
-2. Optionally include a brief scope hint in the `Journal` entry (for example `scope_hint: project` or `scope_hint: global`) when useful.
-3. Exception: if the user explicitly asks to remember something globally now, add or merge it in global `Knowledge` or `Rules` and also leave a brief `Journal` note so consolidation can re-check it.
-
-## Extraction Rules
-- Capture candidate memory that might matter for project design or workflow.
-- Keep entries concise and actionable.
-- ALWAYS capture into `Journal` during active work. DO NOT write directly to other sections or global memory.
-- Avoid timestamps and commit narration.
+1. Capture candidate memory relevant to project design/workflow in project `Journal` first.
+2. Keep entries concise and actionable; avoid timestamps and commit narration.
+3. Optional: include `scope_hint: project` or `scope_hint: global` when helpful.
+4. Exception: if the user explicitly requests immediate global memory, update global `Knowledge` or `Rules` and add a brief `Journal` note for consolidation re-check.
 
 ## Common Mistakes
 - Forget to read global memory first.

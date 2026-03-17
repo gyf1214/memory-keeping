@@ -6,38 +6,19 @@ description: Use when a task boundary is reached and end-of-task memory maintena
 # Memory Consolidation Skill
 
 ## Scope
-- This skill runs at task boundaries only.
-- It updates memory quality, resolves drift, and preserves only durable signal.
+- Runs at task boundaries only.
+- Reconciles memory quality, resolves drift, and preserves durable signal.
 
-## Data Model
+## Memory Model
 - Scopes: `project`, `global`
 - Layers:
-  - `project`: `Knowledge`, `Rule`, `Work`, `Reference`, `Journal`
-  - `global`: `Knowledge`, `Rules`
-
-## Section Semantics
-- `project/Knowledge`:
-  - Durable and high-signal project memory only.
-  - Keep only information that is really useful or important for a design point or workflow.
-  - Do not store detailed implementation history, long design rationale, or narrative timelines.
-- `project/Rule`:
-  - Workflow constraints and operating rules only.
-  - Do not store design decisions or implementation details here.
-- `project/Work`:
-  - Ordered queue of pending work; top item is next actionable work.
-  - Use concise actionable entries.
-  - Convert unresolved questions to `Decide on <topic>`.
-- `project/Reference`:
-  - Keep references only to the current project index and design docs relevant to the current project.
-  - Do not duplicate design details already present in referenced documents.
-- `project/Journal`:
-  - Temporary intake for in-session notes, questions, and candidate memory.
-  - Must be fully reviewed and drained during consolidation.
-- `global/Knowledge`:
-  - Reusable cross-project durable knowledge only.
-- `global/Rules`:
-  - Reusable cross-project workflow rules only.
-  - Default source is consolidation-time promotion from project memory and reviewed `Journal` entries.
+  - `project/Knowledge`: durable design/workflow signal; no implementation history or narrative timelines.
+  - `project/Rule`: workflow constraints and operating rules only.
+  - `project/Work`: ordered pending queue with next action at top; unresolved questions become `Decide on <topic>`.
+  - `project/Reference`: brief pointers to current project index/design docs; keep details in docs.
+  - `project/Journal`: temporary in-session intake; every entry must be reviewed and drained during consolidation.
+  - `global/Knowledge`: reusable cross-project durable knowledge.
+  - `global/Rules`: reusable cross-project workflow rules, usually promoted during consolidation.
 
 ## File Context
 - Global memory file: global `MEMORY.md`
@@ -46,45 +27,29 @@ description: Use when a task boundary is reached and end-of-task memory maintena
   - `system/developer -> chat -> project MEMORY.md -> global MEMORY.md`
 
 ## When To Use
-- At explicit task boundaries (for example, task done).
-- At inferred boundaries (for example, before completion claims or commit finalization).
+- At explicit or inferred task boundaries (for example, task done, completion claim, or commit finalization).
 
 ## Task-Boundary Workflow
-1. Read global `MEMORY.md`, project `MEMORY.md`, the session log for this task, and relevant design docs or project index documents.
-2. Process `Journal` entries top-to-bottom; review every entry and do exactly one disposition for each:
-   - move to `Knowledge`, `Rule`, `Work`, or `Reference`;
-   - if unresolved, convert to `Work` as `Decide on <topic>`;
-   - update design docs or project index and keep only a brief memory reference;
-   - discard if not durable, not important, or duplicates existing persistent memory or design docs.
-3. Normalize persistent memory after Journal processing:
-   - keep `Work` as an ordered queue with next actionable item at top, and remove completed items;
-   - remove duplicates and conflicts;
-   - shorten entries to concise durable statements;
-   - if memory duplicates design docs, keep detail in docs and only brief references in memory.
-4. Promote reusable items to global memory by moving (not copying) to global `Knowledge` or `Rules`, prioritizing reviewed `Journal` entries and including existing project persistent entries when needed.
+1. Read global `MEMORY.md`, project `MEMORY.md`, and relevant design docs or project index documents.
+2. Process `Journal` top-to-bottom and apply exactly one disposition per entry: move to `Knowledge`/`Rule`/`Work`/`Reference`, convert unresolved items to `Work` as `Decide on <topic>`, update docs and keep only a brief memory reference, or discard non-durable/duplicate items.
+3. Normalize persistent memory: keep `Work` ordered with next action at top and remove completed items; remove duplicates/conflicts; shorten entries; keep detailed design content in docs with only brief memory references.
+4. Promote reusable items by moving (not copying) to global `Knowledge`/`Rules`, prioritizing reviewed `Journal` entries and using project persistent entries when needed.
    - If uncertain whether promotion is appropriate, ask the user before moving it to global memory.
 5. Verify exit gates before finishing:
    - ALL `Journal` entries were reviewed;
    - `Journal` is empty;
-   - persisted memory keeps only really useful and important design/workflow signal.
+   - persisted memory is concise, current, and design/workflow relevant.
 
 ## Verification Rules
-- No duplication.
-- ONLY record information that is really useful and important for project design points or workflows.
-- No mirrored memory details when a design doc or session document already contains the same information; store a brief document reference instead.
-- No outdated or conflicting active information.
-- Review ALL `Journal` entries; no skipped entries.
-- `Journal` must be empty on skill exit.
-- Treat consolidation promotion as the normal path to global memory; allow direct global writes only when explicitly requested by the user.
-- No histories, commit hashes, dates, or timeline logs.
-- Keep only concise durable memory.
-- Avoid unnecessary rationale after a decision is settled.
+- No duplicates, conflicts, or outdated active information.
+- Keep only concise durable memory that matters for project design/workflow.
+- If a design or session document already holds detail, keep only a brief memory reference.
+- Review ALL `Journal` entries (no skips) and exit with an empty `Journal`.
+- Treat consolidation-time promotion as the normal path to global memory; allow direct global writes only on explicit user request.
+- No histories, commit hashes, dates, timeline logs, or unnecessary settled rationale.
 
 ## Common Mistakes
-- Forget to review the session log before editing memory.
-- Forget to process `Journal` top-to-bottom and handle every entry.
-- Forget to convert unresolved questions into explicit `Work` items (`Decide on <topic>`).
-- Forget to keep `Work` ordered with the next actionable item at the top.
-- Forget to fully drain `Journal` before completion.
-- Forget to move reusable project memory into global memory.
-- Forget to keep design details in design docs and only references in memory.
+- Forget to review docs/index context before editing memory.
+- Forget to process `Journal` top-to-bottom with one disposition per entry.
+- Forget to convert unresolved questions into `Work` (`Decide on <topic>`) and keep `Work` ordered.
+- Forget to drain `Journal` or promote reusable items to global memory.
