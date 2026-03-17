@@ -37,25 +37,19 @@ description: Use when starting a session, when asked to remember information, or
 4. Read project `MEMORY.md`.
 5. Read project `AGENTS.md` only if present.
 6. Apply conflict order.
-7. If blocked or failing, re-read global then project memory before other debugging.
 
 ## Workflow B: Record During Session
-1. Identify whether the candidate memory seems project-scoped or reusable across projects.
-2. Write the candidate entry to project `Journal` first.
-3. Defer persistent placement (`project/*` or `global/*`) to `memory-consolidation`.
-4. Exception: if the user explicitly asks to remember something globally now, add or merge it in global `Knowledge` or `Rules` and also leave a brief `Journal` note so consolidation can re-check it.
-
-If scope is unclear, ask:
-- "Does this apply to all projects or only this project?"
+1. Write the candidate entry to project `Journal` first.
+2. Optionally include a brief scope hint in the `Journal` entry (for example `scope_hint: project` or `scope_hint: global`) when useful.
+3. Exception: if the user explicitly asks to remember something globally now, add or merge it in global `Knowledge` or `Rules` and also leave a brief `Journal` note so consolidation can re-check it.
 
 ## Extraction Rules
-- Capture only information that is really useful and important for a project design point or workflow.
+- Capture candidate memory that might matter for project design or workflow.
 - Keep entries concise and actionable.
-- During active work, use `Journal` as temporary capture and avoid direct writes to persistent project sections.
-- Default to no direct global writes during active work; use consolidation promotion as the normal path.
+- ALWAYS capture into `Journal` during active work. DO NOT write directly to other sections or global memory.
 - Avoid timestamps and commit narration.
 
 ## Common Mistakes
 - Forget to read global memory first.
-- Forget to ask when scope choice is unclear.
+- Forget to capture memory into `Journal` first.
 - Writing directly to global memory without explicit user request.
