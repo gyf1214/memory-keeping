@@ -12,6 +12,7 @@ description: Use when starting a session, when asked to remember information, or
 ## File Context
 - Global memory file: global `MEMORY.md`
 - Project memory file: project `MEMORY.md`
+- Project `Work`: ordered pending queue of unresolved/deferred actions; next action appears first.
 - Conflict resolution order (highest to lowest):
   - `system/developer -> chat -> project MEMORY.md -> global MEMORY.md`
 
