@@ -52,5 +52,11 @@ ln -s ~/src/memory-keeping/skills/memory-keeping ~/.agents/skills/memory-keeping
 ln -s ~/src/memory-keeping/skills/memory-consolidation ~/.agents/skills/memory-consolidation
 ```
 
+## References
+
+This repository includes design, prompt, and implementation references from existing agent harnesses under `references`.
+
+Those files and analysis are not used or part of this project and may subject to its own `LICENSE`.
+
 ## License
 This project is licensed under the MIT License. See `LICENSE`.
